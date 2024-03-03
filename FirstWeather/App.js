@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
 
 import * as Location from 'expo-location';
@@ -10,7 +10,7 @@ export default function App() {
   const [city, setCity] = useState('loading...');
   const [days, setDays] = useState([]);
   const [ok, setOk] = useState(true);
-  const getWeather = async() => {
+  const getWeather = async () => {
     const {granted} = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       setOk(false);
@@ -24,7 +24,7 @@ export default function App() {
     );
     setCity(location[0].city);
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metirc`
     );
     const json = await response.json();
     setDays(json.daily);
@@ -52,9 +52,12 @@ export default function App() {
             />
           </View>
         ) : (
-          days.map((day, index) => 
-          <View key = {index} style = {styles.day}></View>
-          )
+          days.map((day, index) => (
+          <View key = {index} style = {styles.day}>
+            <Text style = {styles.temp}>{parseFloat(day.temp.day).toFixed(1)}</Text>
+            <Text style = {styles.weather}>{day.weather[0].main}</Text>
+          </View>
+          ))
         )}
       </ScrollView>
     </View>
