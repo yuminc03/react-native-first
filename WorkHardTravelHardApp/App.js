@@ -6,9 +6,11 @@ import {
   TextInput, 
   View, 
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesome } from '@expo/vector-icons';
 import { theme } from './colors';
 
 const STORAGE_KEY = '@toDos'
@@ -41,10 +43,33 @@ export default function App() {
     //   {[Date.now()]: {text, work: working}}
     // );
     /// 이전 내용과 현재 내용 합치기
-    const newToDos = {... toDos, [Date.now()]: {text, working}};
+    const newToDos = {
+      ... toDos, 
+      [Date.now()]: {text, working}
+    };
     setToDos(newToDos);
     await saveToDos(newToDos);
     setText('');
+  };
+  const deleteToDo = async (key) => {
+    Alert.alert(
+      'Delete To Do?', 
+      'Are you sure?', 
+      [
+        {text: "Cancel"},
+        {
+          text: "I'm Sure", 
+          style: 'destructive',
+          onPress: async () => {
+            /// 기존 내용으로 새로운 ToDos만들기
+            const newToDos = {... toDos};
+            delete newToDos[key];
+            setToDos(newToDos);
+            saveToDos(newToDos);
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -76,6 +101,9 @@ export default function App() {
             toDos[key].working === working ? (
               <View style = {styles.toDo} key = {key}>
                 <Text style = {styles.toDoText}>{toDos[key].text}</Text>
+                <TouchableOpacity onPress = {() => deleteToDo(key)}>
+                <FontAwesome name = "trash" size = {24} color = {theme.gray} />
+                </TouchableOpacity>
               </View>
             ) : null
           ))}
@@ -115,6 +143,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderRadius: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   toDoText: {
     color: 'white',
