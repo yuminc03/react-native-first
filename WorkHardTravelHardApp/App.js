@@ -79,13 +79,21 @@ export default function App() {
       <StatusBar style = "auto" />
       <View style = {styles.header}>
         <TouchableOpacity onPress = {work}>
-          <Text style = {{... styles.btnText, color: working ? 'white' : theme.gray}}>
+          <Text style = {{
+            fontSize: 38,
+            fontWeight: '600', 
+            color: working ? 'white' : theme.gray
+          }}>
             Work
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress = {travel}>
-          <Text style = {{... styles.btnText, color: !working ? 'white' : theme.gray}}>
-            Travel
+          <Text style = {{
+            fontSize: 38,
+            fontWeight: '600', 
+            color:!working ? 'white' : theme.gray
+          }}>
+          Travel
           </Text>
         </TouchableOpacity>
       </View>
@@ -125,11 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 100,
-  },
-  btnText: {
-    fontSize: 44,
-    fontWeight: '600',
-    color: 'white',
   },
   input: {
     backgroundColor: 'white',
