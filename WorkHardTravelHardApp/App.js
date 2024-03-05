@@ -15,6 +15,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { theme } from './colors';
 
 const STORAGE_KEY = '@toDos'
+const SECTION_STORAGE_KEY = "@sectionType"
 
 export default function App() {
   const [working, setWorking] = useState(true);
@@ -23,17 +24,36 @@ export default function App() {
   useEffect (() => {
     loadToDos();
   }, []);
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
+  const travel = async () => {
+    setWorking(false);
+    saveSectionType("travel");
+  };
+  const work = async () => {
+    setWorking(true);
+    saveSectionType("work");
+  };
   const onChangeText = (payload) => setText(payload);
   const saveToDos = async (toSave) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
   };
+  const saveSectionType = async (sectionType) => {
+    await AsyncStorage.setItem(SECTION_STORAGE_KEY, sectionType);
+  }
   const loadToDos = async () => {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
+    const section = await AsyncStorage.getItem(SECTION_STORAGE_KEY);
+
     if (s) {
       // String into JavaScript Object
       setToDos(JSON.parse(s));
+    }
+
+    if (section) {
+      if (section === "work") {
+        setWorking(true);
+      } else {
+        setWorking(false);
+      }
     }
   };
   const addToDo = async () => {
