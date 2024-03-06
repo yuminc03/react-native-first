@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { theme } from './colors';
 
 const STORAGE_KEY = '@toDos'
@@ -21,9 +23,12 @@ export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState('');
   const [toDos, setToDos] = useState({});
+  const [isEdit, setIsEdit] = useState(false);
+
   useEffect (() => {
     loadToDos();
   }, []);
+
   const travel = async () => {
     setWorking(false);
     saveSectionType("travel");
@@ -106,6 +111,16 @@ export default function App() {
     }
   };
 
+  const editToDo = async (key) => {
+    if (isEdit) {
+      
+    } else {
+
+    }
+
+    isEdit ? setIsEdit(false) : setIsEdit(true)
+  };
+
   return (
     <View style = {styles.container}>
       <StatusBar style = "light" />
@@ -142,10 +157,27 @@ export default function App() {
           {Object.keys(toDos).map(key => (
             toDos[key].working === working ? (
               <View style = {styles.toDo} key = {key}>
-                <Text style = {styles.toDoText}>{toDos[key].text}</Text>
-                <TouchableOpacity onPress = {() => deleteToDo(key)}>
-                <FontAwesome name = "trash" size = {24} color = {theme.gray} />
-                </TouchableOpacity>
+                <View style = {styles.rowButtons}>
+                  {
+                    isEdit ? (
+                      <TextInput style = {styles.toDoTextInput}>{toDos[key].text}</TextInput>
+                    ) : (
+                      <Text style = {styles.toDoText}>{toDos[key].text}</Text>
+                    )
+                  }
+                  <TouchableOpacity style = {styles.rowItem} onPress = {() => editToDo(key)}>
+                    {
+                      isEdit ? (
+                        <FontAwesome5 name = "check-square" size = {24} color = {theme.gray} />
+                      ) : (
+                        <Feather name = "edit" size = {24} color = {theme.gray} />
+                      )
+                    }
+                  </TouchableOpacity>
+                  <TouchableOpacity style = {styles.rowItem} onPress = {() => deleteToDo(key)}>
+                    <FontAwesome name = "trash" size = {24} color = {theme.gray} />
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : null
           ))}
@@ -183,9 +215,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  rowItem: {
+    marginHorizontal: 5
+  },
+  rowButtons: {
+    flexDirection: "row",
+    letterSpacing: 10
+  },
   toDoText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '500',
+    marginRight: 20
+  },
+  toDoTextInput: {
+    color: "gray",
+    fontSize: 16,
+    fontWeight: '500',
+    marginRight: 20,
+    marginHorizontal: 5,
+    marginVertical: 3,
+    borderRadius: 2,
+    backgroundColor: "white"
   }
 });
