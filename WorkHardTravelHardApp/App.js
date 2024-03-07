@@ -138,7 +138,7 @@ export default function App() {
           <Text style = {{
             fontSize: 38,
             fontWeight: '600', 
-            color:!working ? 'white' : theme.gray
+            color: !working ? 'white' : theme.gray
           }}>
           Travel
           </Text>
