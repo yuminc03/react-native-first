@@ -12,9 +12,9 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { theme } from './colors';
+// 3. Todo에 수정 기능 추가하기
 
 const STORAGE_KEY = '@toDos'
 const SECTION_STORAGE_KEY = "@sectionType"
@@ -23,11 +23,6 @@ export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState('');
   const [toDos, setToDos] = useState({});
-  const [isEdit, setIsEdit] = useState(false);
-
-  useEffect (() => {
-    loadToDos();
-  }, []);
 
   const travel = async () => {
     setWorking(false);
@@ -54,11 +49,7 @@ export default function App() {
     }
 
     if (section) {
-      if (section === "work") {
-        setWorking(true);
-      } else {
-        setWorking(false);
-      }
+      setWorking(section === "work" ? true : false);
     }
   };
   const addToDo = async () => {
@@ -71,9 +62,10 @@ export default function App() {
     //   {[Date.now()]: {text, work: working}}
     // );
     /// 이전 내용과 현재 내용 합치기
+    const isCompleted = false
     const newToDos = {
       ... toDos, 
-      [Date.now()]: {text, working}
+      [Date.now()]: {text, working, isCompleted}
     };
     setToDos(newToDos);
     await saveToDos(newToDos);
@@ -110,16 +102,23 @@ export default function App() {
       );
     }
   };
+  const completeToDo = async (key) => {
+    const newToDos = {... toDos};
+    newToDos[key].isCompleted = newToDos[key].isCompleted ? false : true
+    setToDos(newToDos);
+    saveToDos(newToDos);
+  }
 
-  const editToDo = async (key) => {
-    if (isEdit) {
-      
-    } else {
-
-    }
-
-    isEdit ? setIsEdit(false) : setIsEdit(true)
+  const editToDo = async (key, text) => {
+    const newToDos = { ... toDos }
+    newToDos[key].text = text
+    setToDos(newToDos)
+    saveToDos(newToDos)
   };
+
+  useEffect (() => {
+    loadToDos();
+  }, []);
 
   return (
     <View style = {styles.container}>
@@ -157,22 +156,14 @@ export default function App() {
           {Object.keys(toDos).map(key => (
             toDos[key].working === working ? (
               <View style = {styles.toDo} key = {key}>
+                {
+                  toDos[key].isCompleted ? 
+                  <Text style = {styles.completedToDoText}>{toDos[key].text}</Text> : 
+                  <Text style = {styles.toDoText}>{toDos[key].text}</Text>
+                }
                 <View style = {styles.rowButtons}>
-                  {
-                    isEdit ? (
-                      <TextInput style = {styles.toDoTextInput}>{toDos[key].text}</TextInput>
-                    ) : (
-                      <Text style = {styles.toDoText}>{toDos[key].text}</Text>
-                    )
-                  }
-                  <TouchableOpacity style = {styles.rowItem} onPress = {() => editToDo(key)}>
-                    {
-                      isEdit ? (
-                        <FontAwesome5 name = "check-square" size = {24} color = {theme.gray} />
-                      ) : (
-                        <Feather name = "edit" size = {24} color = {theme.gray} />
-                      )
-                    }
+                  <TouchableOpacity style = {styles.rowItem} onPress = {() => completeToDo(key)}>
+                    <AntDesign name = "checksquare" size = {24} color = {toDos[key].isCompleted ? "white" : theme.gray} />
                   </TouchableOpacity>
                   <TouchableOpacity style = {styles.rowItem} onPress = {() => deleteToDo(key)}>
                     <FontAwesome name = "trash" size = {24} color = {theme.gray} />
@@ -228,14 +219,16 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginRight: 20
   },
-  toDoTextInput: {
-    color: "gray",
+  completedToDoText: {
+    color: 'gray',
     fontSize: 16,
     fontWeight: '500',
     marginRight: 20,
-    marginHorizontal: 5,
-    marginVertical: 3,
-    borderRadius: 2,
-    backgroundColor: "white"
+    textDecorationLine: "line-through"
+  },
+  toDoTextInput: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: '500'
   }
 });
