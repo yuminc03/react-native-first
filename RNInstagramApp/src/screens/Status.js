@@ -10,6 +10,17 @@ const Status = ({route, navigation}) => {
     inputRange: [0, 5],
     outputRange: ['0%', '100%'],
   });
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      navigation.goBack();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 5,
