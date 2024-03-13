@@ -1,10 +1,12 @@
-import { View, Text, StatusBar, Image, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StatusBar, Image, TouchableOpacity, Animated, Platform } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionic from 'react-native-vector-icons/Ionicons';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const Status = ({route, navigation}) => {
   const {name, image} = route.params;
+  const statusBarHeight = getStatusBarHeight();
   const progress = useRef(new Animated.Value(0)).current;
   const progressAnimation = progress.interpolate({
     inputRange: [0, 5],
@@ -40,8 +42,9 @@ const Status = ({route, navigation}) => {
       <StatusBar backgroundColor="black" barStyle="light-content"/>
       <View
         style={{
+          marginTop: Platform.OS === 'ios' ? statusBarHeight : 0,
           height: 3,
-          width: '95%',
+          width: '100%',
           borderWidth: 1,
           backgroundColor: 'gray',
           position: 'absolute',
@@ -58,6 +61,7 @@ const Status = ({route, navigation}) => {
       </View>
       <View
         style={{
+          marginTop: Platform.OS === 'ios' ? statusBarHeight : 0,
           padding: 15,
           flexDirection: 'row',
           alignItems: 'center',
