@@ -78,7 +78,7 @@ const Stories = () => {
                   }}
                 >
                   <Entypo
-                    name='circle-with-plus'
+                    name="circle-with-plus"
                     style={{
                       fontSize: 20,
                       color: '#405DEU',
