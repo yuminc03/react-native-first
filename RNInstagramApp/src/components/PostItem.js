@@ -1,5 +1,6 @@
-import { View, Feature, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const PostItem = ({ data }) => {
@@ -32,7 +33,7 @@ const PostItem = ({ data }) => {
             </Text>
           </View>
         </View>
-        <Feature name="more-vertical" style={{ fontSize: 20 }}/>
+        <Feather name="more-vertical" style={{ fontSize: 20 }}/>
       </View>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Image
@@ -64,7 +65,7 @@ const PostItem = ({ data }) => {
             
           </TouchableOpacity>
         </View>
-        <Feature name="bookmark" style={{ fontSize: 20 }}/>
+        <Feather name="bookmark" style={{ fontSize: 20 }}/>
       </View>
     </View>
   );
