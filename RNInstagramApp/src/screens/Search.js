@@ -1,11 +1,22 @@
-import { View, Text } from 'react-native';
+import { ScrollView, SafeAreaView } from 'react-native';
 import React from 'react';
+import SearchInput from './SearchInput';
 
 const Search = () => {
   return (
-    <View>
-      <Text>Search</Text>
-    </View>
+    <SafeAreaView
+      style={{
+        width: '100%',
+        backgroundColor: 'white',
+        position: 'relative',
+      }}
+    >
+      <ScrollView>
+        {/* ScarchInput */}
+        <SearchInput/>
+        {/* SearchContent */}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
