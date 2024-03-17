@@ -1,6 +1,6 @@
 import { ScrollView, SafeAreaView } from 'react-native';
 import React from 'react';
-import SearchInput from './SearchInput';
+import SearchInput from '../components/SearchInput';
 
 const Search = () => {
   return (
