@@ -33,7 +33,7 @@ const searchData = [
     ],
   },
 ];
-const SearchContent = () => {
+const SearchContent = ({ getData }) => {
   return (
     <View>
       {searchData.map((data, index) => {
@@ -52,6 +52,8 @@ const SearchContent = () => {
                   return (
                     <TouchableOpacity
                       key={i}
+                      onPressIn={() => getData(image)}
+                      onPressOut={() => getData(null)}
                       style={{ paddingBottom: 2, width: '33%' }}
                     >
                       <Image
@@ -82,6 +84,8 @@ const SearchContent = () => {
                       return (
                         <TouchableOpacity
                           key={i}
+                          onPressIn={() => getData(image)}
+                          onPressOut={() => getData(null)}
                           style={{ paddingBottom: 2, width: '49.5%' }}
                         >
                           <Image
@@ -93,6 +97,8 @@ const SearchContent = () => {
                     })}
                   </View>
                   <TouchableOpacity
+                    onPressIn={() => getData(data.images[4])}
+                    onPressOut={() => getData(null)}
                     style={{ marginLeft: 2, width: '33%' }}
                   >
                     <Image
@@ -110,6 +116,8 @@ const SearchContent = () => {
                 }}
               >
                 <TouchableOpacity
+                  onPressIn={() => getData(data.images[2])}
+                  onPressOut={() => getData(null)}
                   style={{ paddingRight: 2, width: '66.5%' }}
                 >
                   <Image
@@ -129,6 +137,8 @@ const SearchContent = () => {
                     return (
                       <TouchableOpacity
                         key={i}
+                        onPressIn={() => getData(image)}
+                        onPressOut={() => getData(null)}
                         style={{ paddingBottom: 2, width: '100%' }}
                       >
                         <Image

@@ -1,9 +1,13 @@
-import { ScrollView, SafeAreaView } from 'react-native';
-import React from 'react';
+import { ScrollView, SafeAreaView, View, StatusBar, Image, Text } from 'react-native';
+import React, { useState } from 'react';
 import SearchInput from '../components/SearchInput';
 import SearchContent from '../components/SearchContent';
 
 const Search = () => {
+  const [image, setImage] = useState("ddd");
+  const getData = (img) => {
+    setImage(img);
+  };
   return (
     <SafeAreaView
       style={{
@@ -16,7 +20,7 @@ const Search = () => {
         {/* ScarchInput */}
         <SearchInput/>
         {/* SearchContent */}
-        <SearchContent/>
+        <SearchContent getData={getData}/>
       </ScrollView>
     </SafeAreaView>
   );
